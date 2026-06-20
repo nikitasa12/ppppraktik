@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>sky.net - ИТ Решения</title>
+  <style>
+    /* --- Глобальные стили --- */
+    :root {
+      --bg-primary: #0a0a0f; /* Очень темный фон */
+      --bg-secondary: #121220; /* Темно-синий */
+      --accent-white: #ffffff; /* Белый для неона */
+      --text-primary: #e0e0ff; /* Светло-серый для основного текста */
+      --text-secondary: #a0a0c0; /* Более темный серый */
+      --border-color: #1e1e3a;
+      --glow-white: 255, 255, 255;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.6;
+      background-image: radial-gradient(circle at 10% 20%, rgba(30, 30, 58, 0.1) 0%, transparent 20%),
+                        radial-gradient(circle at 90% 80%, rgba(255, 255, 255, 0.03) 0%, transparent 20%);
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    h1, h2, h3 {
+      font-weight: 600;
+      line-height: 1.2;
+      color: var(--accent-white);
+      text-shadow: 
+        0 0 6px rgba(var(--glow-white), 0.7),
+        0 0 12px rgba(var(--glow-white), 0.4),
+        0 0 20px rgba(var(--glow-white), 0.2);
+    }
+
+    a {
+      text-decoration: none;
+      color: var(--accent-white);
+      transition: color 0.3s ease, text-shadow 0.3s ease;
+      text-shadow: 
+        0 0 4px rgba(var(--glow-white), 0.5),
+        0 0 8px rgba(var(--glow-white), 0.3);
+    }
+
+    a:hover {
+      color: var(--accent-white);
+      text-shadow: 
+        0 0 8px rgba(var(--glow-white), 0.9),
+        0 0 16px rgba(var(--glow-white), 0.6),
+        0 0 24px rgba(var(--glow-white), 0.3);
+    }
+
+    /* --- Шапка --- */
+    header {
+      background-color: rgba(18, 18, 32, 0.8);
+      backdrop-filter: blur(10px);
+      padding: 1rem 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 1px solid rgba(var(--glow-white), 0.1);
+    }
+
+    .header-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: var(--accent-white);
+      text-shadow: 
+        0 0 6px rgba(var(--glow-white), 0.8),
+        0 0 12px rgba(var(--glow-white), 0.5);
+      position: relative; /* Для позиционирования картинки */
+    }
+
+    /* Стили для изображения */
+    .logo img.sun {
+      position: absolute;
+      top: 3px; /* Отступ сверху от логотипа */
+      right: -120px; /* Отступ слева от логотипа */
+      width: 40px;
+      height: 40px;
+      z-index: 101; /* Выше, чем содержимое header */
+      animation: rotateSun 10s linear infinite; /* Анимация вращения */
+    }
+
+    @keyframes rotateSun {
+      from {
+        transform: rotate(0deg);
+      }
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    nav ul {
+      display: flex;
+      list-style: none;
+      gap: 2rem;
+    }
+
+    nav a {
+      color: var(--text-primary);
+      position: relative;
+      text-shadow: 
+        0 0 3px rgba(var(--glow-white), 0.4),
+        0 0 6px rgba(var(--glow-white), 0.2);
+    }
+
+    nav a::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background-color: var(--accent-white);
+      box-shadow: 0 0 4px rgba(var(--glow-white), 0.7);
+      transition: width 0.3s ease;
+    }
+
+    nav a:hover::after {
+      width: 100%;
+    }
+
+    /* --- Бесконечная лента --- */
+    .infinite-marquee {
+      width: 100%;
+      height: 4px;
+      overflow: hidden;
+      position: relative;
+      background: var(--bg-primary);
+    }
+
+    .marquee-track {
+      display: flex;
+      white-space: nowrap;
+      /* ВАЖНО: ширина 200% для создания бесконечного эффекта */
+      width: 200%;
+      animation: scrollMarquee 20s linear infinite;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    /* Дублируем элементы, чтобы создать плавную склейку */
+    .marquee-element {
+      height: 4px;
+      background: linear-gradient(90deg, transparent, var(--accent-white), transparent);
+      margin: 0 2px;
+      flex-shrink: 0;
+      width: 100px; /* Ширина каждого элемента */
+    }
+
+    @keyframes scrollMarquee {
+      0% {
+        /* Начинаем с 0 */
+        transform: translateX(0);
+      }
+      100% {
+        /* Заканчиваем на -50%, что равно ширине первого ряда */
+        transform: translateX(-50%);
+      }
+    }
+
+    /* --- Слайдер --- */
+    .slider {
+      height: 60vh;
+      overflow: hidden;
+      position: relative;
+      background: linear-gradient(135deg, #0a0a0f, #121220);
+    }
+
+    .slide {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      transition: opacity 0.5s ease-in-out;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      background: linear-gradient(rgba(10, 10, 15, 0.7), rgba(10, 10, 15, 0.7)), url('images/slide1.jpg') no-repeat center center/cover;
+    }
+
+    .slide.slide-2 {
+      background: linear-gradient(rgba(10, 10, 15, 0.7), rgba(10, 10, 15, 0.7)), url('images/slide2.jpg') no-repeat center center/cover;
+    }
+
+    .slide.active {
+      opacity: 1;
+    }
+
+    .slider-content h2 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      color: var(--accent-white);
+      text-shadow: 
+        0 0 10px rgba(var(--glow-white), 0.8),
+        0 0 20px rgba(var(--glow-white), 0.5),
+        0 0 30px rgba(var(--glow-white), 0.3);
+    }
+
+    .slider-content p {
+      font-size: 1.2rem;
+      max-width: 600px;
+      margin: 0 auto 2rem;
+      color: var(--text-secondary);
+      text-shadow: 0 0 3px rgba(var(--glow-white), 0.2);
+    }
+
+    .btn {
+      display: inline-block;
+      background-color: transparent;
+      color: var(--accent-white);
+      padding: 12px 30px;
+      border: 2px solid var(--accent-white);
+      border-radius: 4px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      box-shadow: 
+        0 0 5px rgba(var(--glow-white), 0.3),
+        inset 0 0 5px rgba(var(--glow-white), 0.1);
+    }
+
+    .btn:hover {
+      background-color: rgba(255, 255, 255, 0.05);
+      border-color: var(--accent-white);
+      color: var(--accent-white);
+      box-shadow: 
+        0 0 10px rgba(var(--glow-white), 0.6),
+        inset 0 0 10px rgba(var(--glow-white), 0.2);
+      text-decoration: none;
+    }
+
+    /* --- Навигация для слайдера --- */
+    .slider-nav {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 10px;
+      z-index: 20;
+    }
+
+    .slider-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background-color: rgba(var(--glow-white), 0.3);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: 1px solid var(--accent-white);
+      box-shadow: 0 0 3px rgba(var(--glow-white), 0.4);
+    }
+
+    .slider-dot.active {
+      background-color: var(--accent-white);
+      box-shadow: 
+        0 0 5px rgba(var(--glow-white), 0.8),
+        0 0 10px rgba(var(--glow-white), 0.5);
+    }
+
+    /* --- Услуги --- */
+    .services {
+      padding: 5rem 0;
+      background-color: var(--bg-secondary);
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .service-card {
+      background-color: var(--bg-primary);
+      padding: 2rem;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .service-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .service-card h3 {
+      margin-bottom: 1rem;
+      font-size: 1.4rem;
+    }
+
+    .service-card p {
+      color: var(--text-secondary);
+    }
+
+    /* --- Футер --- */
+    footer {
+      background-color: var(--bg-secondary);
+      padding: 2rem 0;
+      text-align: center;
+      color: var(--text-secondary);
+      border-top: 1px solid rgba(var(--glow-white), 0.1);
+    }
+
+    .footer-content {
+      margin-bottom: 1rem;
+    }
+
+    .social-links a {
+      margin: 0 10px;
+      color: var(--text-secondary);
+      transition: color 0.3s ease, text-shadow 0.3s ease;
+      text-shadow: 
+        0 0 3px rgba(var(--glow-white), 0.3),
+        0 0 6px rgba(var(--glow-white), 0.1);
+    }
+
+    .social-links a:hover {
+      color: var(--accent-white);
+      text-shadow: 
+        0 0 6px rgba(var(--glow-white), 0.7),
+        0 0 12px rgba(var(--glow-white), 0.4);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Шапка -->
+  <header>
+    <div class="container header-container">
+      <div class="logo">sky.net
+        <img class="sun" src="images/sky2.png" alt="облако" width="140" height="40">
+      </div>
+      <nav>
+        <ul>
+          <li><a href="#services">Услуги</a></li>
+          <li><a href="#about">О нас</a></li>
+          <li><a href="#">Проекты</a></li>
+          <li><a href="#">Контакты</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Бесконечная лента -->
+  <div class="infinite-marquee">
+    <div class="marquee-track">
+      <!-- Первый ряд элементов -->
+      <div class="marquee-element"></div>
+      <div class="marquee-element"></div>
+      <div class="marquee-element"></div>
+      <div class="marquee-element"></div>
+      <div class="marquee-element"></div>
+      <div class="marquee-element"></div>
+      <div class="marquee-element"></div>
+      <div class="marquee-element"></div>
+      <div class="marquee-element"></div>
+      <div class="marquee-element"></div>
+      <div class="marquee-element"></div>
+      <div class="marquee-element"></div>
+      <div class="marquee-element"></div>
+      <div class="marquee-element"></div>
+      <div class="marquee-element"></div>
+      <div class="marquee-element"></div>
+      <div class="marquee-element"></div>
+      <div class="marquee-element"></div>
+      <div class="marquee-element"></div>
+      <div class="marquee-element"></div>
+      <div class="marquee-element"></div>
+      <div class="marquee-element"></div>
+      <div class="marquee-element"></div>
+      <div class="marquee-element"></div>
+      <div class="marquee-element"></div>
+      <div class="marquee-element"></div>
+      <div class="marquee-element"></div>
+      <div class="marquee-element"></div>
+      <div class="marquee-element"></div>
+      <div class="marquee-element"></div>
+      <div class="marquee-element"></div>
+      <div class="marquee-element"></div>
+      <div class="marquee-element"></div>
+      <div class="marquee-element"></div>
+      <div class="marquee-element"></div>
+      <div class="marquee-element"></div>
+    </div>
+  </div>
+
+  <!-- Слайдер -->
+  <section class="slider">
+    <!-- Слайд 1 -->
+    <div class="slide slide-1 active">
+      <div class="slider-content">
+        <h2>Инновационные IT-решения</h2>
+        <p>Создаем программное обеспечение, которое работает на ваш бизнес.</p>
+        <a href="#" class="btn">Начать проект</a>
+      </div>
+    </div>
+    <!-- Слайд 2 -->
+    <div class="slide slide-2">
+      <div class="slider-content">
+        <h2>Безопасность и Надежность</h2>
+        <p>Наши решения защищены и спроектированы для стабильной работы.</p>
+        <a href="#" class="btn">Подробнее</a>
+      </div>
+    </div>
+
+    <!-- Навигационные точки -->
+    <div class="slider-nav">
+      <span class="slider-dot dot-0 active" onclick="currentSlide(0)"></span>
+      <span class="slider-dot dot-1" onclick="currentSlide(1)"></span>
+    </div>
+  </section>
+
+  <!-- Секция "Услуги" -->
+  <section id="services" class="services">
+    <div class="container">
+      <h2>Наши услуги</h2>
+      <div class="services-grid">
+        <div class="service-card">
+            <h3>Разработка ПО</h3>
+            <p>Индивидуальные решения под ваши задачи.</p>
+        </div>
+        <div class="service-card">
+            <h3>IT-Консалтинг</h3>
+            <p>Анализ, стратегия, оптимизация.</p>
+        </div>
+        <div class="service-card">
+            <h3>Поддержка</h3>
+            <p>Гарантируем стабильность и безопасность.</p>
+        </div>
+        <div class="service-card">
+            <h3>Облачные решения</h3>
+            <p>Перенос и управление инфраструктурой в облаке.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Футер -->
+  <footer>
+    <div class="container">
+        <div class="footer-content">
+            <p>&copy; 2026 sky.net. Все права защищены.</p>
+        </div>
+        <div class="social-links">
+            <a href="#">Telegram</a>
+            <a href="#">LinkedIn</a>
+            <a href="#">GitHub</a>
+        </div>
+    </div>
+  </footer>
+
+  <script>
+    let slideIndex = 0;
+    const slides = document.querySelectorAll('.slide');
+    const dots = document.querySelectorAll('.slider-dot');
+
+    function showSlides(n) {
+      slides.forEach(slide => slide.classList.remove('active'));
+      dots.forEach(dot => dot.classList.remove('active'));
+
+      slideIndex = n;
+
+      if (slideIndex >= slides.length) { slideIndex = 0; }
+      if (slideIndex < 0) { slideIndex = slides.length - 1; }
+
+      slides[slideIndex].classList.add('active');
+      dots[slideIndex].classList.add('active');
+    }
+
+    function currentSlide(n) {
+      showSlides(n);
+      resetTimer();
+    }
+
+    function nextSlide() {
+      showSlides(slideIndex + 1);
+    }
+
+    let slideTimer = setInterval(nextSlide, 5000);
+
+    function resetTimer() {
+        clearInterval(slideTimer);
+        slideTimer = setInterval(nextSlide, 5000);
+    }
+
+    showSlides(slideIndex);
+  </script>
+</body>
+</html>
